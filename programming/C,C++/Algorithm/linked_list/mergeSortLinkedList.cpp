@@ -1,0 +1,147 @@
+/*
+ * MergeSort(headRef)
+ * 1) If head is NULL or there is only one element in the Linked List then return.
+ * 2) Else divide the linked list into two halves.
+ * 3) Sort the two halves a and b.
+ *      MergeSort(a);
+ *      MergeSort(b);
+ * 4) Merge the sorted a and b (using SortedMerge()) and update the head pointer using headRef.
+ * *headRef = SortedMerge(a, b);
+ */
+
+#include <cstdio>
+#include <cstdlib>
+
+/* Link list node */
+struct Node
+{
+    int data;
+    struct Node *next;
+};
+
+/* function prototypes */
+struct Node* SortedMerge(struct Node *a, struct Node *b) {
+    struct Node* result = NULL; 
+
+    /* Base cases */
+    if (a == NULL)
+        return(b);
+    else if ( b == NULL)
+        return(a);
+
+    /* Pick either a or b, and recur */
+    if (a->data <= b->data)
+    {
+        result = a;
+        result->next = SortedMerge(a->next, b);
+    }
+    else
+    {
+        result = b;
+        result->next = SortedMerge(b->next, a);
+    }
+
+    return(result);
+};
+
+/*
+ * Split the nodes of the given list into front and back halves, and return the two lists using the reference parameters. If the length is odd, the extra node should go in the front list. Uses the fast/slow pointer strategy.
+ */
+void FrontBackSplit(struct Node *source, struct Node **frontRef, struct Node **backRef)
+{
+    struct Node *slow, *fast;
+    slow = source;
+    fast = source->next;
+
+    /* Advance 'fast' two nodes and advance 'slow' one node */
+    while(fast != null) {
+        fast = fast->next; 
+        if (fast != NULL) {
+            fast = fast->next;
+            slow = slow->next;
+        }
+    }
+
+    *frontRef = source;
+    *backRef = slow->next;
+    slow->next = NULL;
+};
+
+void MergeSort(struct Node** headRef)
+{
+    struct Node* head = *headRef;
+    struct Node* a;
+    struct Node* b;
+
+    /* Base case -- length 0 or 1 */
+    if ((head == NULL) || (head->next == NULL))
+    {
+        return;
+    }
+
+    /* Split head into 'a' and 'b' sublists */
+    FrontBackSplit(head, &a, &b);
+
+    /* Recursively sort the sublists */
+    MergeSort(&a);
+    MergeSort(&b);
+
+    /* answer = merge the two sorted lists together */
+    *headRef = SortedMerge(a, b);
+}
+
+/* sorts the linked list by changing next pointers (not data) */
+
+void printList(struct Node *node) 
+{
+    while(node != NULL)
+    {
+        cout << node->data << " ";
+        node = node->next;
+    }
+}
+
+/* Function to insert a node at the beginging of the linked list */
+void push(struct Node** head_ref, int new_data) 
+{ 
+    /* allocate node */
+    struct Node* new_node = 
+                    (struct Node*) malloc(sizeof(struct Node)); 
+      
+    /* put in the data */
+    new_node->data = new_data; 
+      
+    /* link the old list off the new node */
+    new_node->next = (*head_ref);  
+      
+    /* move the head to point to the new node */
+    (*head_ref) = new_node; 
+}  
+  
+/* Drier program to test above functions*/
+int main() 
+{ 
+    /* Start with the empty list */
+    struct Node* res = NULL; 
+    struct Node* a = NULL; 
+      
+    /* Let us create a unsorted linked lists to test the functions 
+     * Created lists shall be a: 2->3->20->5->10->15 */
+    push(&a, 15); 
+    push(&a, 10); 
+    push(&a, 5);  
+    push(&a, 20); 
+    push(&a, 3); 
+    push(&a, 2);  
+      
+    /* Sort the above created Linked List */
+    MergeSort(&a); 
+      
+    printf("Sorted Linked List is: \n"); 
+    printList(a);          
+      
+    getchar(); 
+    return 0; 
+} 
+
+
