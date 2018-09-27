@@ -71,6 +71,63 @@ public:
         ptr2->next = NULL;
     }
 
+
+    void removeLoopOptimal(ListNode *loop_node, ListNode *head)
+    {
+        ListNode *ptr1 = loop_node;
+        ListNode *ptr2 = loop_node;
+
+        // Count the number of nodes in loop
+        unsigned in k = 1, i;
+        while (ptr1->next != ptr2)
+        {
+            ptr1 = ptr1->next;
+            k++;
+        }
+
+        // Fix one pointer to head
+        ptr1 = head;
+
+        // And the other pointer to k nodes after head
+        for (i=0; i < k; i++)
+        {
+            ptr2 = ptr2->next;
+        }
+
+        /* Move both pointers at the same pace, they will meet at loop starting node */
+        while (ptr2 != ptr1)
+        {
+            ptr1 = ptr1->next;
+            ptr2 = ptr2->next;
+        }
+
+        // Get pointer to the last node to remove the loop
+        ptr2 = ptr2->next;
+        while (ptr2->next != ptr1)
+        {
+            ptr2 = ptr2->next;
+        }
+
+        /* Set the next node of the loop ending node to remove the loop */
+
+        ptr2->next = NULL;
+    }
+
+    /* Method 3
+     *  Distance traveled by fast pointer = 2 * (Distance traveled by slow pointer)
+     *  m : number of nodes before the loop starts
+     *  n : number of nodes in the loop
+     *  k : node where the slow and fast pointer have met
+     *  x : Number of complete cyclic rounds made by fast pointer before they meet first time
+     *  y : Number of complete cyclic rounds made by slow pointer before they meet first time
+     *
+     *  (m + n*x + k) = 2 * (m + n*y + k)
+     *  (m+k) = (x-2y) * n => (m+k) is a multiple of n 
+     *  so, if slow pointer starts from the head and fast starts from the meeting node k, then both will meet first time after m steps at the beginning of the loop (m+k) = n 
+     *
+     *
+     */
+
 };
 
 
