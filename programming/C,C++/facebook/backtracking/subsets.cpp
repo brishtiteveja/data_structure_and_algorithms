@@ -32,7 +32,7 @@ class Solution {
             cout << endl;
         }
 
-        vector<vector<int> > subsets(vector<int>& nums)
+        vector<vector<int> > subsets_helper(vector<int>& nums)
         {
             vector<vector<int> > res;
             if (nums.size() == 0)
@@ -54,9 +54,10 @@ class Solution {
                     v.push_back(nums[j]);
                 }
 
-                vector<vector <int> > r = subsets(v);
+                vector<vector <int> > r = subsets_helper(v);
 
                 vector<int> r2;
+                // push vector with i-th element
                 r2.push_back(nums[i]);
                 res.push_back(r2);
                 r2.clear();
@@ -80,11 +81,20 @@ class Solution {
 
             return res;
         }
+
+        vector<vector<int> > subsets(vector<int>& nums)
+        {
+            vector<vector<int> > S = subsets_helper(nums);
+            vector<int> r;
+            S.push_back(r);
+
+            return S;
+        }
 };
 
 int main()
 {
-    int a[3] = {3, 1, 2};
+    int a[3] = {1, 2, 3};
     int n = 3;
     vector<int> nums(a, a+n);
 
