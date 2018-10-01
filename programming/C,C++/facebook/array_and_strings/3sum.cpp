@@ -42,7 +42,7 @@ class Solution
                         // Processing of duplicates of number 2
                         // Rolling the front pointer to the next different number
                         while (front < back && num[front] == triplet[1])
-                            front++
+                            front++;
 
                         while(front < back && num[back] == triplet[2])
                             back--;
@@ -57,3 +57,14 @@ class Solution
             return res;
         }
 };
+
+int main()
+{
+    int ns[6] = {-1, 0, 1, 2, -1, -4};
+    vector<int> nums(ns, ns+6); 
+
+    Solution sol;
+    vector<int> res = sol.threeSum(nums);
+
+    return 0;
+}
