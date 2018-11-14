@@ -10,6 +10,7 @@ int height(struct node* node)
 	return 1 + max(lheight, rheight);
 }
 
+/* maximum distance between two nodes in the binary tree */
 int diameter(struct node *tree)
 {
 	if (tree == NULL)
